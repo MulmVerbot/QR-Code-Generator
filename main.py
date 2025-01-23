@@ -8,10 +8,13 @@ class QRDings:
     def __init__(self, master):
         self.master = master
         self.Programm_Name = "QR-Code Generator"
-        self.Version = "0"
+        self.Version = "0.0.1"
         print(f"[-VERSION-] {self.Version}")
         self.Zeit = "Die Zeit ist eine Illusion."
-        master.title(self.Programm_Name + " " + self.Version + "                                                                          " + self.Zeit)
+        master.title(self.Programm_Name + " " + self.Version)
+
+        self.output_path = None
+        self.data = None
 
         self.Inhalt_eingabe = tk.Entry(root, width=50)
         self.Inhalt_eingabe.place(x=10,y=100)
@@ -20,15 +23,25 @@ class QRDings:
         self.Erstellen_mit_Bild.place(x=100,y=190)
 
     def Daten_vorbereiten(self):
-        data = self.Inhalt_eingabe.get().strip
-        output_path = filedialog.asksaveasfilename(title="Datei speichern unter...", defaultextension=".png",filetypes=[("Bild", "*.png"), ("Alle Dateien", "*.*"),])
-        if output_path:
-            self.code_erstellen_mit_bild(data, output_path)
+        self.data = None
+        self.data = self.Inhalt_eingabe.get()
+        if self.data == "" or None:
+            messagebox.showerror(title=self.Programm_Name, message="Bitte geben Sie zuerst einen Inhalt an!")
+            return
+        else:
+            self.data.strip()
+        self.output_path = filedialog.asksaveasfilename(title="QR-Code speichern unter...", defaultextension=".png",filetypes=[("Bild", "*.png"), ("Alle Dateien", "*.*"),])
+        if self.output_path:
+            self.code_erstellen_mit_bild()
         else:
             messagebox.showinfo(title=self.Programm_Name, message="Vorgang wurde abgebrochen.")
 
 
-    def code_erstellen_mit_bild(data, output_path, qr_size=500, empty_center_ratio=0.3):
+    def code_erstellen_mit_bild(self):
+        empty_center_ratio = 0.3
+        qr_size = 500
+        data = self.data
+        output_path = self.output_path
         # QR-Code generieren
         qr = qrcode.QRCode(
             error_correction=qrcode.constants.ERROR_CORRECT_H  # Hoher Fehlerkorrekturgrad für das Bild in der Mitte
@@ -54,13 +67,14 @@ class QRDings:
         qr_img.save(output_path)
         print(f"QR-Code mit leerem Bereich in der Mitte erfolgreich als '{output_path}' gespeichert.")
         output_path = None
-        data = None
+        self.data = None
 
 if __name__ == "__main__":
     root = tk.Tk()
     width = 420
     height = 690
     def mittig_fenster(root, width, height):
+        root.update_idletasks()
         fenster_breite = root.winfo_screenwidth()
         fenster_höhe = root.winfo_screenheight()
         x = (fenster_breite - width) // 2

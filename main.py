@@ -1,17 +1,27 @@
 import tkinter as tk
 import qrcode
-from PIL import Image, ImageDraw
+from PIL import Image
 from tkinter import filedialog
 from tkinter import messagebox
-
+from tkinter import Menu
+#            _ .-') _             .-') _                   
+#           ( (  OO) )           ( OO ) )                  
+#           \     .'_  .---.,--./ ,--,'   ,--.   .-----.  
+#           ,`'--..._)/_   ||   \ |  |\  /  .'  / ,-.   \ 
+#           |  |  \  ' |   ||    \|  | ).  / -. '-'  |  | 
+#           |  |   ' | |   ||  .     |/ | .-.  '   .'  /  
+#           |  |   / : |   ||  |\    |  ' \  |  |.'  /__  
+#           |  '--'  / |   ||  | \   |  \  `'  /|       | 
+#           `-------'  `---'`--'  `--'   `----' `-------'  <- 2025 ->
 class QRDings:
     def __init__(self, master):
         self.master = master
         self.Programm_Name = "QR-Code Generator"
-        self.Version = "0.1.0"
+        self.Version = "1.0.0"
         print(f"[-VERSION-] {self.Version}")
         self.Zeit = "Die Zeit ist eine Illusion."
         master.title(self.Programm_Name + " " + self.Version)
+        root.resizable(False, False)
 
         self.output_path = None
         self.data = None
@@ -28,11 +38,23 @@ class QRDings:
         self.Bild_pfad_e = tk.Entry(root, width=50)
         self.Bild_pfad_e.place(x=10,y=200)
 
-        self.Erstellen_mit_Bild = tk.Button(root, text="Mit Bild erstellen", command=self.Daten_vorbereiten)
+        self.Erstellen_mit_Bild = tk.Button(root, text="QR-Code generieren...", command=self.Daten_vorbereiten)
         self.Erstellen_mit_Bild.place(x=100,y=290)
 
-        self.Bild_einf_k = tk.Button(root, text="Bild einfügen", command=self.Bild_einf_c)
+        self.Bild_einf_k = tk.Button(root, text="Bild einfügen...", command=self.Bild_einf_c)
         self.Bild_einf_k.place(x=10,y=230)
+
+        ### Nur das Menu zeugs
+        self.menu = Menu(root)
+        root.configure(menu=self.menu)
+        self.menudings = Menu(self.menu, tearoff=0)
+        self.menu.add_cascade(label=self.Programm_Name  + " " + self.Version, menu=self.menudings)
+        self.menudings.add_command(label="Info", command=self.info)
+    ###
+
+    def info(self):
+        messagebox.showinfo(title=self.Programm_Name, message=self.Programm_Name + " " + self.Version + "\nProgrammiert von D1n62,\nhttps://dings.software für mehr Informationen")
+
 
     def Bild_einf_c(self):
         print("Bild_einf_c(def)")

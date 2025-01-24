@@ -80,9 +80,15 @@ class QRDings:
             self.data.strip()
         self.output_path = filedialog.asksaveasfilename(title="QR-Code speichern unter...", defaultextension=".png",filetypes=[("Bild", "*.png"), ("Alle Dateien", "*.*"),])
         if self.output_path and self.Bild_Pfad != "" or None:
-            self.code_erstellen_mit_bild()
+            try:
+                self.code_erstellen_mit_bild()
+            except:
+                messagebox.showerror(title=self.Programm_Name, message="Beim erstellen des QR-Codes ist ein Fehler aufgetreten, womöglich waren es zu viele Zeichen?")
         elif self.output_path:
-            self.ohne_Bild()
+            try:
+                self.ohne_Bild()
+            except:
+                messagebox.showerror(title=self.Programm_Name, message="Beim erstellen des QR-Codes ist ein Fehler aufgetreten, womöglich waren es zu viele Zeichen?")
         else:
             messagebox.showinfo(title=self.Programm_Name, message="Vorgang wurde abgebrochen.")
 

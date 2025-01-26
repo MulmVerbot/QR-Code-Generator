@@ -4,6 +4,7 @@ from PIL import Image
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import Menu
+import sys
 #            _ .-') _             .-') _                   
 #           ( (  OO) )           ( OO ) )                  
 #           \     .'_  .---.,--./ ,--,'   ,--.   .-----.  
@@ -17,7 +18,7 @@ class QRDings:
     def __init__(self, master):
         self.master = master
         self.Programm_Name = "QR-Code Generator"
-        self.Version = "1.0.0"
+        self.Version = "1.0.1"
         print(f"[-VERSION-] {self.Version}")
         self.Zeit = "Die Zeit ist eine Illusion."
         master.title(self.Programm_Name + " " + self.Version)
@@ -26,16 +27,27 @@ class QRDings:
         self.output_path = None
         self.data = None
         self.Bild_Pfad = None
+        if sys.platform == "darwin":
+            self.Windows = False
+            print("[-Plattform-] Darwin")
+        else:
+            self.Windows = True
+            print("[-Plattform-] Windows")
 
         self.Inhalt_l = tk.Label(root, text="Link oder Text des QR-Codes")
         self.Inhalt_l.place(x=10,y=70)
-        self.Inhalt_eingabe = tk.Entry(root, width=50)
+        if self.Windows == True:
+            self.Inhalt_eingabe = tk.Entry(root, width=50)
+            self.Bild_pfad_e = tk.Entry(root, width=50)
+        else:
+            self.Inhalt_eingabe = tk.Entry(root, width=20)
+            self.Bild_pfad_e = tk.Entry(root, width=20)
         self.Inhalt_eingabe.place(x=10,y=100)
 
 
         self.Inhalt_l1 = tk.Label(root, text="Bild des QR-Codes (Optional)")
         self.Inhalt_l1.place(x=10,y=170)
-        self.Bild_pfad_e = tk.Entry(root, width=50)
+        
         self.Bild_pfad_e.place(x=10,y=200)
 
         self.Erstellen_mit_Bild = tk.Button(root, text="QR-Code generieren...", command=self.Daten_vorbereiten)
